@@ -1,9 +1,1199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Alarme de Tempo</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #10151c;
+
+    color: white;
+
+}
+
+#app {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+}
+
+.panel {
+
+    width: 600px;
+
+    max-width: 95vw;
+
+    background: #181e27;
+
+    border-radius: 25px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.5);
+
+}
+
+h1 {
+
+    margin:
+        0 0 10px;
+
+    font-size: 36px;
+
+}
+
+.description {
+
+    color: #9aa4b2;
+
+    margin-bottom: 25px;
+
+}
+
+.timer {
+
+    font-size: 100px;
+
+    font-weight: bold;
+
+    color: #4da3ff;
+
+    margin: 20px 0;
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+.status {
+
+    color: #9aa4b2;
+
+    margin-bottom: 25px;
+
+}
+
+.settings {
+
+    background: #0e1319;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+.settings-title {
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+
+}
+
+.inputs {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+
+}
+
+.inputs label {
+
+    display: block;
+
+    text-align: left;
+
+    color: #9aa4b2;
+
+    font-size: 13px;
+
+    margin-bottom: 6px;
+
+}
+
+input[type="number"] {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid #303844;
+
+    background: #181e27;
+
+    color: white;
+
+    font-size: 18px;
+
+}
+
+.option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+}
+
+.option input {
+
+    width: 18px;
+
+    height: 18px;
+
+}
+
+.buttons {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+
+}
+
+button {
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+button:hover {
+
+    filter: brightness(1.15);
+
+}
+
+#start {
+
+    background: #198754;
+
+}
+
+#pause {
+
+    background: #b58105;
+
+}
+
+#reset {
+
+    background: #39414d;
+
+    grid-column:
+        span 2;
+
+}
+
+#notification {
+
+    background: #1769d1;
+
+    grid-column:
+        span 2;
+
+}
+
+#test {
+
+    background: #7b2cbf;
+
+    grid-column:
+        span 2;
+
+}
+
+
+/*
+================================
+ ALERTA
+================================
+*/
+
+#alert {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999999;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #ff0000;
+
+    width: 100vw;
+
+    height: 100vh;
+
+}
+
+#alert.active {
+
+    display: flex;
+
+}
+
+.alert-content {
+
+    width: 90vw;
+
+    max-width: 1100px;
+
+    padding: 50px;
+
+    text-align: center;
+
+    background: white;
+
+    color: black;
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 0 100px white;
+
+}
+
+.alert-content h2 {
+
+    margin: 0;
+
+    font-size:
+        clamp(60px, 12vw, 150px);
+
+    color: red;
+
+    font-weight: 900;
+
+}
+
+.alert-content p {
+
+    font-size:
+        clamp(25px, 5vw, 50px);
+
+    font-weight: bold;
+
+}
+
+#stop {
+
+    background: #c90000;
+
+    padding:
+        20px 50px;
+
+    font-size: 23px;
+
+}
+
+
+/*
+================================
+ PISCAR
+================================
+*/
+
+@keyframes flash {
+
+    0% {
+        background: #ff0000;
+    }
+
+    50% {
+        background: #ffffff;
+    }
+
+    100% {
+        background: #ff0000;
+    }
+
+}
+
+.flash {
+
+    animation:
+        flash .25s infinite;
+
+}
+
+
+/*
+================================
+ TREMER
+================================
+*/
+
+@keyframes shake {
+
+    0% {
+        transform: translate(0,0);
+    }
+
+    20% {
+        transform: translate(-20px,10px);
+    }
+
+    40% {
+        transform: translate(20px,-10px);
+    }
+
+    60% {
+        transform: translate(-15px,-5px);
+    }
+
+    80% {
+        transform: translate(15px,5px);
+    }
+
+    100% {
+        transform: translate(0,0);
+    }
+
+}
+
+.shake {
+
+    animation:
+        shake .4s infinite;
+
+}
+
+
+/*
+================================
+ RESPONSIVO
+================================
+*/
+
+@media(max-width:600px) {
+
+    .panel {
+
+        padding: 20px;
+
+    }
+
+    .timer {
+
+        font-size: 70px;
+
+    }
+
+    .buttons {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    #reset,
+    #notification,
+    #test {
+
+        grid-column: auto;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+<div class="panel">
+
+<h1>
+    ⏰ Alarme de Tempo
+</h1>
+
+<div class="description">
+
+    Temporizador profissional para Windows
+
+</div>
+
+
+<div
+    class="timer"
+    id="timer"
+>
+    00:10
+</div>
+
+
+<div
+    class="status"
+    id="status"
+>
+    Temporizador parado
+</div>
+
+
+<div class="settings">
+
+<div class="settings-title">
+    Intervalo
+</div>
+
+
+<div class="inputs">
+
+<div>
+
+<label>
+    Minutos
+</label>
+
+<input
+    id="minutes"
+    type="number"
+    min="0"
+    value="0"
+>
+
+</div>
+
+
+<div>
+
+<label>
+    Segundos
+</label>
+
+<input
+    id="seconds"
+    type="number"
+    min="0"
+    max="59"
+    value="10"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="settings">
+
+<div class="settings-title">
+    Tipo de alerta
+</div>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="effect"
+    value="flash"
+    checked
+>
+
+Piscar a tela
+
+</label>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="effect"
+    value="shake"
+>
+
+Tremer a tela
+
+</label>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="effect"
+    value="both"
+>
+
+Piscar e tremer
+
+</label>
+
+
+<label class="option">
+
+<input
+    type="checkbox"
+    id="sound"
+    checked
+>
+
+Ativar som
+
+</label>
+
+</div>
+
+
+<div class="buttons">
+
+
+<button id="start">
+    ▶ INICIAR
+</button>
+
+
+<button id="pause">
+    ⏸ PAUSAR
+</button>
+
+
+<button id="reset">
+    ↻ REINICIAR
+</button>
+
+
+<button id="test">
+    🚨 TESTAR ALARME
+</button>
+
+
+<button id="notification">
+    🔔 ATIVAR NOTIFICAÇÃO
+</button>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="alert">
+
+<div class="alert-content">
+
+<h2>
+    ATENÇÃO!
+</h2>
+
+<p>
+    SEU TEMPO TERMINOU!
+</p>
+
+<button id="stop">
+    PARAR ALERTA
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+let timerInterval = null;
+
+let soundInterval = null;
+
+let titleInterval = null;
+
+let running = false;
+
+let totalSeconds = 10;
+
+let remainingSeconds = 10;
+
+const originalTitle =
+    document.title;
+
+
+const timer =
+    document.getElementById("timer");
+
+const status =
+    document.getElementById("status");
+
+const alertScreen =
+    document.getElementById("alert");
+
+const minutes =
+    document.getElementById("minutes");
+
+const seconds =
+    document.getElementById("seconds");
+
+const sound =
+    document.getElementById("sound");
+
+
+function formatTime(value) {
+
+    const m =
+        Math.floor(value / 60);
+
+    const s =
+        value % 60;
+
+    return (
+        String(m).padStart(2,"0")
+        + ":" +
+        String(s).padStart(2,"0")
+    );
+
+}
+
+
+function updateTimer() {
+
+    timer.textContent =
+        formatTime(
+            remainingSeconds
+        );
+
+}
+
+
+function getConfiguredTime() {
+
+    let m =
+        parseInt(
+            minutes.value
+        ) || 0;
+
+    let s =
+        parseInt(
+            seconds.value
+        ) || 0;
+
+    m =
+        Math.max(0,m);
+
+    s =
+        Math.max(
+            0,
+            Math.min(59,s)
+        );
+
+    return (
+        m * 60 + s
+    );
+
+}
+
+
+function startTimer() {
+
+    if (running)
+        return;
+
+    if (
+        remainingSeconds <= 0
+    ) {
+
+        totalSeconds =
+            getConfiguredTime();
+
+        remainingSeconds =
+            totalSeconds;
+
+    }
+
+    if (
+        totalSeconds <= 0
+    ) {
+
+        alert(
+            "Informe um tempo maior que zero."
+        );
+
+        return;
+
+    }
+
+    running = true;
+
+    status.textContent =
+        "Temporizador funcionando";
+
+    clearInterval(
+        timerInterval
+    );
+
+    timerInterval =
+        setInterval(() => {
+
+            remainingSeconds--;
+
+            updateTimer();
+
+            if (
+                remainingSeconds <= 0
+            ) {
+
+                showAlert();
+
+                remainingSeconds =
+                    totalSeconds;
+
+                updateTimer();
+
+            }
+
+        },1000);
+
+}
+
+
+function pauseTimer() {
+
+    running = false;
+
+    clearInterval(
+        timerInterval
+    );
+
+    timerInterval = null;
+
+    status.textContent =
+        "Temporizador pausado";
+
+}
+
+
+function resetTimer() {
+
+    running = false;
+
+    clearInterval(
+        timerInterval
+    );
+
+    timerInterval = null;
+
+    totalSeconds =
+        getConfiguredTime();
+
+    if (
+        totalSeconds <= 0
+    ) {
+
+        totalSeconds = 10;
+
+        minutes.value = 0;
+
+        seconds.value = 10;
+
+    }
+
+    remainingSeconds =
+        totalSeconds;
+
+    updateTimer();
+
+    status.textContent =
+        "Temporizador parado";
+
+    stopAlert();
+
+}
+
+
+let audioContext = null;
+
+
+function initializeAudio() {
+
+    try {
+
+        if (!audioContext) {
+
+            audioContext =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
+        }
+
+        if (
+            audioContext.state ===
+            "suspended"
+        ) {
+
+            audioContext.resume();
+
+        }
+
+    }
+
+    catch(e) {
+
+        console.log(e);
+
+    }
+
+}
+
+
+function beep() {
+
+    if (!sound.checked)
+        return;
+
+    try {
+
+        initializeAudio();
+
+        const oscillator =
+            audioContext
+                .createOscillator();
+
+        const gain =
+            audioContext
+                .createGain();
+
+        oscillator.type =
+            "square";
+
+        oscillator.frequency.value =
+            900;
+
+        gain.gain.setValueAtTime(
+            .3,
+            audioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .01,
+            audioContext.currentTime + .4
+        );
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audioContext.destination
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            audioContext.currentTime + .4
+        );
+
+    }
+
+    catch(e) {
+
+        console.log(e);
+
+    }
+
+}
+
+
+function startSound() {
+
+    stopSound();
+
+    beep();
+
+    soundInterval =
+        setInterval(
+            beep,
+            700
+        );
+
+}
+
+
+function stopSound() {
+
+    clearInterval(
+        soundInterval
+    );
+
+    soundInterval = null;
+
+}
+
+
+function startTitleFlash() {
+
+    stopTitleFlash();
+
+    let state = false;
+
+    titleInterval =
+        setInterval(() => {
+
+            state = !state;
+
+            document.title =
+                state
+                    ? "🚨 ATENÇÃO!"
+                    : "🚨 TEMPO TERMINOU!";
+
+        },500);
+
+}
+
+
+function stopTitleFlash() {
+
+    clearInterval(
+        titleInterval
+    );
+
+    titleInterval = null;
+
+    document.title =
+        originalTitle;
+
+}
+
+
+function requestNotification() {
+
+    if (
+        !("Notification" in window)
+    ) {
+
+        alert(
+            "Notificações não são suportadas."
+        );
+
+        return;
+
+    }
+
+    Notification
+        .requestPermission()
+        .then(permission => {
+
+            if (
+                permission === "granted"
+            ) {
+
+                alert(
+                    "Notificações ativadas."
+                );
+
+            }
+
+            else {
+
+                alert(
+                    "Permissão negada."
+                );
+
+            }
+
+        });
+
+}
+
+
+function sendNotification() {
+
+    if (
+        !("Notification" in window)
+    )
+        return;
+
+    if (
+        Notification.permission !==
+        "granted"
+    )
+        return;
+
+    try {
+
+        const n =
+            new Notification(
+                "🚨 ATENÇÃO!",
+                {
+                    body:
+                        "Seu tempo terminou!",
+                    requireInteraction:
+                        true
+                }
+            );
+
+        n.onclick =
+            function() {
+
+                window.focus();
+
+                showVisibleAlert();
+
+            };
+
+    }
+
+    catch(e) {
+
+        console.log(e);
+
+    }
+
+}
+
+
+function showVisibleAlert() {
+
+    const selected =
+        document.querySelector(
+            'input[name="effect"]:checked'
+        );
+
+    const effect =
+        selected
+            ? selected.value
+            : "flash";
+
+
+    alertScreen.classList.remove(
+        "flash",
+        "shake"
+    );
+
+    alertScreen.classList.add(
+        "active"
+    );
+
+
+    if (
+        effect === "flash"
+    ) {
+
+        alertScreen.classList.add(
+            "flash"
+        );
+
+    }
+
+
+    if (
+        effect === "shake"
+    ) {
+
+        alertScreen.classList.add(
+            "shake"
+        );
+
+    }
+
+
+    if (
+        effect === "both"
+    ) {
+
+        alertScreen.classList.add(
+            "flash",
+            "shake"
+        );
+
+    }
+
+
+    startSound();
+
+}
+
+
 function showAlert() {
 
     /*
-     * Pede ao aplicativo Windows para
-     * colocar a janela sobre os outros
-     * programas.
+     * Avisa o Electron para colocar
+     * a janela sobre todos os programas.
      */
 
     if (
@@ -16,62 +1206,27 @@ function showAlert() {
     }
 
 
-    /*
-     * Mostra o alerta visual.
-     */
-
     showVisibleAlert();
-
-
-    /*
-     * Pisca o título da janela.
-     */
 
     startTitleFlash();
 
-
-    /*
-     * Envia notificação do Windows/navegador.
-     */
-
     sendNotification();
-
-
-    /*
-     * Tenta colocar a janela em primeiro plano.
-     */
-
-    try {
-
-        window.focus();
-
-    }
-
-    catch(e) {}
 
 }
 
+
 function stopAlert() {
 
-    alertScreen
-        .classList
-        .remove(
-            "active",
-            "flash",
-            "shake"
-        );
-
+    alertScreen.classList.remove(
+        "active",
+        "flash",
+        "shake"
+    );
 
     stopSound();
 
-
     stopTitleFlash();
 
-
-    /*
-     * Retira o aplicativo do modo
-     * "sempre por cima".
-     */
 
     if (
         window.alarmSystem &&
@@ -89,3 +1244,150 @@ function stopAlert() {
             : "Temporizador pausado";
 
 }
+
+
+/*
+================================
+ BOTÕES
+================================
+*/
+
+document
+    .getElementById("start")
+    .onclick = function() {
+
+        initializeAudio();
+
+        startTimer();
+
+    };
+
+
+document
+    .getElementById("pause")
+    .onclick =
+        pauseTimer;
+
+
+document
+    .getElementById("reset")
+    .onclick =
+        resetTimer;
+
+
+document
+    .getElementById("stop")
+    .onclick =
+        stopAlert;
+
+
+document
+    .getElementById("notification")
+    .onclick =
+        requestNotification;
+
+
+/*
+================================
+ TESTAR ALARME
+================================
+*/
+
+document
+    .getElementById("test")
+    .onclick = function() {
+
+        initializeAudio();
+
+        showAlert();
+
+    };
+
+
+/*
+================================
+ ESC
+================================
+*/
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            stopAlert();
+
+        }
+
+    }
+);
+
+
+/*
+================================
+ ALTERAÇÃO DO TEMPO
+================================
+*/
+
+minutes.addEventListener(
+    "change",
+    function() {
+
+        if (!running) {
+
+            totalSeconds =
+                getConfiguredTime();
+
+            remainingSeconds =
+                totalSeconds;
+
+            updateTimer();
+
+        }
+
+    }
+);
+
+
+seconds.addEventListener(
+    "change",
+    function() {
+
+        if (!running) {
+
+            totalSeconds =
+                getConfiguredTime();
+
+            remainingSeconds =
+                totalSeconds;
+
+            updateTimer();
+
+        }
+
+    }
+);
+
+
+/*
+================================
+ INICIALIZAÇÃO
+================================
+*/
+
+totalSeconds =
+    getConfiguredTime();
+
+remainingSeconds =
+    totalSeconds;
+
+updateTimer();
+
+</script>
+
+</body>
+
+</html>
