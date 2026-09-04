@@ -1,0 +1,91 @@
+function showAlert() {
+
+    /*
+     * Pede ao aplicativo Windows para
+     * colocar a janela sobre os outros
+     * programas.
+     */
+
+    if (
+        window.alarmSystem &&
+        window.alarmSystem.start
+    ) {
+
+        window.alarmSystem.start();
+
+    }
+
+
+    /*
+     * Mostra o alerta visual.
+     */
+
+    showVisibleAlert();
+
+
+    /*
+     * Pisca o título da janela.
+     */
+
+    startTitleFlash();
+
+
+    /*
+     * Envia notificação do Windows/navegador.
+     */
+
+    sendNotification();
+
+
+    /*
+     * Tenta colocar a janela em primeiro plano.
+     */
+
+    try {
+
+        window.focus();
+
+    }
+
+    catch(e) {}
+
+}
+
+function stopAlert() {
+
+    alertScreen
+        .classList
+        .remove(
+            "active",
+            "flash",
+            "shake"
+        );
+
+
+    stopSound();
+
+
+    stopTitleFlash();
+
+
+    /*
+     * Retira o aplicativo do modo
+     * "sempre por cima".
+     */
+
+    if (
+        window.alarmSystem &&
+        window.alarmSystem.stop
+    ) {
+
+        window.alarmSystem.stop();
+
+    }
+
+
+    status.textContent =
+        running
+            ? "Temporizador funcionando"
+            : "Temporizador pausado";
+
+}
