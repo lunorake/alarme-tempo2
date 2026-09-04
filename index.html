@@ -557,7 +557,54 @@ button:hover {
 </div>
 
 </div>
+    
+<div class="settings">
 
+<div class="settings-title">
+    Modo do alerta
+</div>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="alarmMode"
+    value="fullscreen"
+    checked
+>
+
+🖥️ Tela cheia
+
+</label>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="alarmMode"
+    value="window"
+>
+
+🪟 Janela grande
+
+</label>
+
+
+<label class="option">
+
+<input
+    type="radio"
+    name="alarmMode"
+    value="small"
+>
+
+📌 Janela pequena sempre por cima
+
+</label>
+
+</div>
 
 <div class="settings">
 
@@ -1192,8 +1239,25 @@ function showVisibleAlert() {
 function showAlert() {
 
     /*
-     * Avisa o Electron para colocar
-     * a janela sobre todos os programas.
+     * Descobre qual modo de alerta
+     * foi escolhido pelo usuário.
+     */
+
+    const selectedMode =
+        document.querySelector(
+            'input[name="alarmMode"]:checked'
+        );
+
+
+    const mode =
+        selectedMode
+            ? selectedMode.value
+            : "fullscreen";
+
+
+    /*
+     * Manda a informação para
+     * o aplicativo Windows.
      */
 
     if (
@@ -1201,14 +1265,30 @@ function showAlert() {
         window.alarmSystem.start
     ) {
 
-        window.alarmSystem.start();
+        window.alarmSystem.start(
+            mode
+        );
 
     }
 
 
+    /*
+     * Mostra o alerta visual.
+     */
+
     showVisibleAlert();
 
+
+    /*
+     * Pisca o título.
+     */
+
     startTitleFlash();
+
+
+    /*
+     * Notificação.
+     */
 
     sendNotification();
 
