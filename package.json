@@ -1,0 +1,36 @@
+{
+  "name": "alarme-tempo",
+  "version": "1.0.0",
+  "description": "Alarme de tempo para Windows",
+  "main": "main.js",
+  "author": "Alarme Tempo",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.alarmetempo.app",
+    "productName": "Alarme de Tempo",
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  }
+}
