@@ -11,33 +11,57 @@ let win = null;
 function createWindow() {
 
     win = new BrowserWindow({
+        width: 700,
+        height: 850,
 
-        width: 900,
-        height: 900,
-
-        minWidth: 500,
+        minWidth: 450,
         minHeight: 600,
 
         backgroundColor: "#10151c",
 
-        show: true,
+        show: false,
+
+        autoHideMenuBar: true,
 
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,
-            nodeIntegration: false
+            nodeIntegration: false,
+            sandbox: false
         }
-
     });
 
-    win.loadFile("index.html");
+    /*
+     * Carrega o HTML.
+     */
+    win.loadFile(
+        path.join(__dirname, "index.html")
+    );
 
     /*
-     * Permite que o alerta fique acima
-     * de outros programas do Windows.
+     * Só mostra a janela depois
+     * que o HTML estiver carregado.
      */
+    win.once("ready-to-show", () => {
+        win.show();
+    });
 
-    win.setAlwaysOnTop(false);
+    /*
+     * Caso ocorra algum erro ao carregar
+     * a página, registra no console.
+     */
+    win.webContents.on(
+        "did-fail-load",
+        (event, errorCode, errorDescription) => {
+
+            console.error(
+                "Erro ao carregar:",
+                errorCode,
+                errorDescription
+            );
+
+        }
+    );
 
     win.on("closed", () => {
         win = null;
@@ -46,49 +70,44 @@ function createWindow() {
 
 
 /*
- * INICIA O ALERTA DE SISTEMA
- */
+========================================
+ ALERTA — SEMPRE POR CIMA
+========================================
+*/
 
 ipcMain.on("alarm-start", () => {
 
     if (!win)
         return;
 
-    /*
-     * Mostra a janela mesmo se estiver
-     * minimizada ou atrás de outro programa.
-     */
-
     win.show();
 
     /*
-     * Coloca a janela acima das outras
-     * aplicações do Windows.
+     * Sempre por cima das outras janelas.
      */
-
     win.setAlwaysOnTop(
         true,
         "screen-saver"
     );
 
     /*
-     * Faz ocupar a tela inteira.
+     * Coloca a janela em tela cheia.
      */
-
     win.setFullScreen(true);
 
     /*
      * Traz para frente.
      */
-
     win.focus();
 
 });
 
 
 /*
- * PARA O ALERTA
- */
+========================================
+ PARAR ALERTA
+========================================
+*/
 
 ipcMain.on("alarm-stop", () => {
 
@@ -101,39 +120,32 @@ ipcMain.on("alarm-stop", () => {
 
     win.show();
 
+    win.focus();
+
 });
 
 
 /*
- * CRIA A APLICAÇÃO
- */
+========================================
+ INICIAR ELECTRON
+========================================
+*/
 
 app.whenReady().then(() => {
 
     createWindow();
 
-    app.on("activate", () => {
-
-        if (
-            BrowserWindow.getAllWindows()
-                .length === 0
-        ) {
-            createWindow();
-        }
-
-    });
-
 });
 
 
 /*
- * FECHA O APLICATIVO NO WINDOWS
- */
+========================================
+ WINDOWS
+========================================
+*/
 
 app.on("window-all-closed", () => {
 
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+    app.quit();
 
 });
