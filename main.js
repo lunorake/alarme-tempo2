@@ -8,9 +8,17 @@ const path = require("path");
 
 let win = null;
 
+
+/*
+========================================
+ CRIAR JANELA
+========================================
+*/
+
 function createWindow() {
 
     win = new BrowserWindow({
+
         width: 700,
         height: 850,
 
@@ -19,43 +27,74 @@ function createWindow() {
 
         backgroundColor: "#10151c",
 
-        show: false,
+        /*
+         * MOSTRA IMEDIATAMENTE
+         * para reduzir a sensação de demora.
+         */
+        show: true,
 
         autoHideMenuBar: true,
 
         webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
+
+            preload:
+                path.join(
+                    __dirname,
+                    "preload.js"
+                ),
+
             contextIsolation: true,
+
             nodeIntegration: false,
+
             sandbox: false
+
         }
+
     });
 
+
     /*
-     * Carrega o HTML.
+     * Carrega o aplicativo.
      */
+
     win.loadFile(
-        path.join(__dirname, "index.html")
+        path.join(
+            __dirname,
+            "index.html"
+        )
     );
 
-    /*
-     * Só mostra a janela depois
-     * que o HTML estiver carregado.
-     */
-    win.once("ready-to-show", () => {
-        win.show();
-    });
 
     /*
-     * Caso ocorra algum erro ao carregar
-     * a página, registra no console.
+     * Quando carregar, garante
+     * que a janela esteja disponível.
      */
+
+    win.webContents.on(
+        "did-finish-load",
+        () => {
+
+            win.show();
+
+        }
+    );
+
+
+    /*
+     * Erros de carregamento.
+     */
+
     win.webContents.on(
         "did-fail-load",
-        (event, errorCode, errorDescription) => {
+        (
+            event,
+            errorCode,
+            errorDescription
+        ) => {
 
             console.error(
-                "Erro ao carregar:",
+                "Erro:",
                 errorCode,
                 errorDescription
             );
@@ -63,44 +102,141 @@ function createWindow() {
         }
     );
 
-    win.on("closed", () => {
-        win = null;
-    });
+
+    win.on(
+        "closed",
+        () => {
+
+            win = null;
+
+        }
+    );
+
 }
 
 
 /*
 ========================================
- ALERTA — SEMPRE POR CIMA
+ ALERTA
 ========================================
+
+ mode:
+
+ fullscreen
+ window
+ small
 */
 
-ipcMain.on("alarm-start", () => {
+ipcMain.on(
+    "alarm-start",
+    (
+        event,
+        mode
+    ) => {
 
-    if (!win)
-        return;
+        if (!win)
+            return;
 
-    win.show();
 
-    /*
-     * Sempre por cima das outras janelas.
-     */
-    win.setAlwaysOnTop(
-        true,
-        "screen-saver"
-    );
+        /*
+         * Primeiro mostra.
+         */
 
-    /*
-     * Coloca a janela em tela cheia.
-     */
-    win.setFullScreen(true);
+        win.show();
 
-    /*
-     * Traz para frente.
-     */
-    win.focus();
+        win.focus();
 
-});
+
+        /*
+         * Tira configurações anteriores.
+         */
+
+        win.setFullScreen(false);
+
+        win.setAlwaysOnTop(false);
+
+
+        /*
+         =================================
+         TELA CHEIA
+         =================================
+        */
+
+        if (
+            mode === "fullscreen"
+        ) {
+
+            win.setFullScreen(true);
+
+            win.setAlwaysOnTop(
+                true,
+                "screen-saver"
+            );
+
+            win.focus();
+
+            return;
+
+        }
+
+
+        /*
+         =================================
+         JANELA GRANDE
+         =================================
+        */
+
+        if (
+            mode === "window"
+        ) {
+
+            win.setSize(
+                1000,
+                700
+            );
+
+            win.center();
+
+            win.setAlwaysOnTop(
+                true
+            );
+
+            win.focus();
+
+            return;
+
+        }
+
+
+        /*
+         =================================
+         JANELA PEQUENA
+         =================================
+        */
+
+        if (
+            mode === "small"
+        ) {
+
+            win.setSize(
+                600,
+                400
+            );
+
+            win.center();
+
+            win.setAlwaysOnTop(
+                true
+            );
+
+            win.focus();
+
+            return;
+
+        }
+
+    }
+);
 
 
 /*
@@ -109,20 +245,36 @@ ipcMain.on("alarm-start", () => {
 ========================================
 */
 
-ipcMain.on("alarm-stop", () => {
+ipcMain.on(
+    "alarm-stop",
+    () => {
 
-    if (!win)
-        return;
+        if (!win)
+            return;
 
-    win.setFullScreen(false);
 
-    win.setAlwaysOnTop(false);
+        win.setFullScreen(false);
 
-    win.show();
+        win.setAlwaysOnTop(false);
 
-    win.focus();
 
-});
+        /*
+         * Volta ao tamanho normal.
+         */
+
+        win.setSize(
+            700,
+            850
+        );
+
+        win.center();
+
+        win.show();
+
+        win.focus();
+
+    }
+);
 
 
 /*
@@ -131,21 +283,26 @@ ipcMain.on("alarm-stop", () => {
 ========================================
 */
 
-app.whenReady().then(() => {
+app.whenReady().then(
+    () => {
 
-    createWindow();
+        createWindow();
 
-});
+    }
+);
 
 
 /*
 ========================================
- WINDOWS
+ FECHAR WINDOWS
 ========================================
 */
 
-app.on("window-all-closed", () => {
+app.on(
+    "window-all-closed",
+    () => {
 
-    app.quit();
+        app.quit();
 
-});
+    }
+);
