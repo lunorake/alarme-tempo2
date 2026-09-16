@@ -74,17 +74,9 @@ body {
 h1 {
 
     margin:
-        0 0 10px;
+        0 0 25px;
 
     font-size: 36px;
-
-}
-
-.description {
-
-    color: #9aa4b2;
-
-    margin-bottom: 25px;
 
 }
 
@@ -374,15 +366,21 @@ button:hover {
 @keyframes flash {
 
     0% {
+
         background: #ff0000;
+
     }
 
     50% {
+
         background: #ffffff;
+
     }
 
     100% {
+
         background: #ff0000;
+
     }
 
 }
@@ -404,27 +402,39 @@ button:hover {
 @keyframes shake {
 
     0% {
+
         transform: translate(0,0);
+
     }
 
     20% {
+
         transform: translate(-20px,10px);
+
     }
 
     40% {
+
         transform: translate(20px,-10px);
+
     }
 
     60% {
+
         transform: translate(-15px,-5px);
+
     }
 
     80% {
+
         transform: translate(15px,5px);
+
     }
 
     100% {
+
         transform: translate(0,0);
+
     }
 
 }
@@ -484,242 +494,304 @@ button:hover {
 
 <div id="app">
 
-<div class="panel">
+    <div class="panel">
 
-<h1>
-    ⏰ Alarme de Tempo
-</h1>
+        <h1>
+            ⏰ Alarme de Tempo
+        </h1>
 
-<div class="description">
 
-    Temporizador profissional para Windows
+        <div
+            class="timer"
+            id="timer"
+        >
+            00:10
+        </div>
 
-</div>
 
+        <div
+            class="status"
+            id="status"
+        >
+            Temporizador parado
+        </div>
 
-<div
-    class="timer"
-    id="timer"
->
-    00:10
-</div>
 
+        <div class="settings">
 
-<div
-    class="status"
-    id="status"
->
-    Temporizador parado
-</div>
+            <div class="settings-title">
+                Intervalo
+            </div>
 
 
-<div class="settings">
+            <div class="inputs">
 
-<div class="settings-title">
-    Intervalo
-</div>
+                <div>
 
+                    <label>
+                        Minutos
+                    </label>
 
-<div class="inputs">
+                    <input
+                        id="minutes"
+                        type="number"
+                        min="0"
+                        value="0"
+                    >
 
-<div>
+                </div>
 
-<label>
-    Minutos
-</label>
 
-<input
-    id="minutes"
-    type="number"
-    min="0"
-    value="0"
->
+                <div>
 
-</div>
+                    <label>
+                        Segundos
+                    </label>
 
+                    <input
+                        id="seconds"
+                        type="number"
+                        min="0"
+                        max="59"
+                        value="10"
+                    >
 
-<div>
+                </div>
 
-<label>
-    Segundos
-</label>
+            </div>
 
-<input
-    id="seconds"
-    type="number"
-    min="0"
-    max="59"
-    value="10"
->
+        </div>
 
-</div>
 
-</div>
+        <div class="settings">
 
-</div>
-    
-<div class="settings">
+            <div class="settings-title">
+                Modo do alerta
+            </div>
 
-<div class="settings-title">
-    Modo do alerta
-</div>
 
+            <label class="option">
 
-<label class="option">
+                <input
+                    type="radio"
+                    name="alarmMode"
+                    value="fullscreen"
+                    checked
+                >
 
-<input
-    type="radio"
-    name="alarmMode"
-    value="fullscreen"
-    checked
->
+                🖥️ Tela cheia
 
-🖥️ Tela cheia
+            </label>
 
-</label>
 
+            <label class="option">
 
-<label class="option">
+                <input
+                    type="radio"
+                    name="alarmMode"
+                    value="window"
+                >
 
-<input
-    type="radio"
-    name="alarmMode"
-    value="window"
->
+                🪟 Janela grande
 
-🪟 Janela grande
+            </label>
 
-</label>
 
+            <label class="option">
 
-<label class="option">
+                <input
+                    type="radio"
+                    name="alarmMode"
+                    value="small"
+                >
 
-<input
-    type="radio"
-    name="alarmMode"
-    value="small"
->
+                📌 Janela pequena sempre por cima
 
-📌 Janela pequena sempre por cima
+            </label>
 
-</label>
+        </div>
 
-</div>
 
-<div class="settings">
+        <div class="settings">
 
-<div class="settings-title">
-    Tipo de alerta
-</div>
+            <div class="settings-title">
+                Tipo de alerta
+            </div>
 
 
-<label class="option">
+            <label class="option">
 
-<input
-    type="radio"
-    name="effect"
-    value="flash"
-    checked
->
+                <input
+                    type="radio"
+                    name="effect"
+                    value="flash"
+                    checked
+                >
 
-Piscar a tela
+                Piscar a tela
 
-</label>
+            </label>
 
 
-<label class="option">
+            <label class="option">
 
-<input
-    type="radio"
-    name="effect"
-    value="shake"
->
+                <input
+                    type="radio"
+                    name="effect"
+                    value="shake"
+                >
 
-Tremer a tela
+                Tremer a tela
 
-</label>
+            </label>
 
 
-<label class="option">
+            <label class="option">
 
-<input
-    type="radio"
-    name="effect"
-    value="both"
->
+                <input
+                    type="radio"
+                    name="effect"
+                    value="both"
+                >
 
-Piscar e tremer
+                Piscar e tremer
 
-</label>
+            </label>
 
 
-<label class="option">
+            <label class="option">
 
-<input
-    type="checkbox"
-    id="sound"
-    checked
->
+                <input
+                    type="checkbox"
+                    id="sound"
+                    checked
+                >
 
-Ativar som
+                Ativar som
 
-</label>
+            </label>
 
-</div>
+        </div>
 
 
-<div class="buttons">
+        <div
+            style="
+                margin-bottom:20px;
+                padding:14px;
+                background:#0e1319;
+                border-radius:12px;
+                color:#9aa4b2;
+                font-size:13px;
+                line-height:1.8;
+            "
+        >
 
+            <strong style="color:white;">
+                Atalhos do teclado
+            </strong>
 
-<button id="start">
-    ▶ INICIAR
-</button>
+            <br>
 
+            <b style="color:#4da3ff;">
+                F5
+            </b>
+            Iniciar
 
-<button id="pause">
-    ⏸ PAUSAR
-</button>
+            &nbsp; • &nbsp;
 
+            <b style="color:#4da3ff;">
+                F6
+            </b>
+            Pausar
 
-<button id="reset">
-    ↻ REINICIAR
-</button>
+            &nbsp; • &nbsp;
 
+            <b style="color:#4da3ff;">
+                F7
+            </b>
+            Reiniciar
 
-<button id="test">
-    🚨 TESTAR ALARME
-</button>
+            <br>
 
+            <b style="color:#4da3ff;">
+                F8
+            </b>
+            Testar alerta
 
-<button id="notification">
-    🔔 ATIVAR NOTIFICAÇÃO
-</button>
+            &nbsp; • &nbsp;
 
+            <b style="color:#ff5555;">
+                ESC
+            </b>
+            Parar alerta
 
-</div>
+        </div>
 
-</div>
+
+        <div class="buttons">
+
+
+            <button id="start">
+
+                ▶ INICIAR
+
+            </button>
+
+
+            <button id="pause">
+
+                ⏸ PAUSAR
+
+            </button>
+
+
+            <button id="reset">
+
+                ↻ REINICIAR
+
+            </button>
+
+
+            <button id="test">
+
+                🚨 TESTAR ALARME
+
+            </button>
+
+
+            <button id="notification">
+
+                🔔 ATIVAR NOTIFICAÇÃO
+
+            </button>
+
+
+        </div>
+
+    </div>
 
 </div>
 
 
 <div id="alert">
 
-<div class="alert-content">
+    <div class="alert-content">
 
-<h2>
-    ATENÇÃO!
-</h2>
+        <h2>
+            ATENÇÃO!
+        </h2>
 
-<p>
-    SEU TEMPO TERMINOU!
-</p>
+        <p>
+            SEU TEMPO TERMINOU!
+        </p>
 
-<button id="stop">
-    PARAR ALERTA
-</button>
+        <button id="stop">
 
-</div>
+            PARAR ALERTA
+
+        </button>
+
+    </div>
 
 </div>
 
@@ -743,36 +815,62 @@ const originalTitle =
 
 
 const timer =
-    document.getElementById("timer");
+    document.getElementById(
+        "timer"
+    );
 
 const status =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
 
 const alertScreen =
-    document.getElementById("alert");
+    document.getElementById(
+        "alert"
+    );
 
 const minutes =
-    document.getElementById("minutes");
+    document.getElementById(
+        "minutes"
+    );
 
 const seconds =
-    document.getElementById("seconds");
+    document.getElementById(
+        "seconds"
+    );
 
 const sound =
-    document.getElementById("sound");
+    document.getElementById(
+        "sound"
+    );
 
+
+/*
+================================
+ FORMATAÇÃO
+================================
+*/
 
 function formatTime(value) {
 
     const m =
-        Math.floor(value / 60);
+        Math.floor(
+            value / 60
+        );
 
     const s =
         value % 60;
 
     return (
-        String(m).padStart(2,"0")
-        + ":" +
-        String(s).padStart(2,"0")
+
+        String(m)
+            .padStart(2,"0")
+
+        + ":"
+
+        + String(s)
+            .padStart(2,"0")
+
     );
 
 }
@@ -788,6 +886,12 @@ function updateTimer() {
 }
 
 
+/*
+================================
+ TEMPO CONFIGURADO
+================================
+*/
+
 function getConfiguredTime() {
 
     let m =
@@ -800,14 +904,23 @@ function getConfiguredTime() {
             seconds.value
         ) || 0;
 
+
     m =
-        Math.max(0,m);
+        Math.max(
+            0,
+            m
+        );
+
 
     s =
         Math.max(
             0,
-            Math.min(59,s)
+            Math.min(
+                59,
+                s
+            )
         );
+
 
     return (
         m * 60 + s
@@ -816,10 +929,22 @@ function getConfiguredTime() {
 }
 
 
+/*
+================================
+ INICIAR TIMER
+================================
+*/
+
 function startTimer() {
 
     if (running)
         return;
+
+
+    /*
+    Se o contador chegou a zero,
+    começa um novo ciclo.
+    */
 
     if (
         remainingSeconds <= 0
@@ -833,6 +958,11 @@ function startTimer() {
 
     }
 
+
+    /*
+    Não permite iniciar com zero.
+    */
+
     if (
         totalSeconds <= 0
     ) {
@@ -845,39 +975,71 @@ function startTimer() {
 
     }
 
+
     running = true;
+
 
     status.textContent =
         "Temporizador funcionando";
+
 
     clearInterval(
         timerInterval
     );
 
+
+    /*
+    CICLO CONTÍNUO
+    */
+
     timerInterval =
-        setInterval(() => {
+        setInterval(
+            () => {
 
-            remainingSeconds--;
-
-            updateTimer();
-
-            if (
-                remainingSeconds <= 0
-            ) {
-
-                showAlert();
-
-                remainingSeconds =
-                    totalSeconds;
+                remainingSeconds--;
 
                 updateTimer();
 
-            }
 
-        },1000);
+                /*
+                CHEGOU A ZERO
+                */
+
+                if (
+                    remainingSeconds <= 0
+                ) {
+
+                    /*
+                    Mostra o alerta.
+                    */
+
+                    showAlert();
+
+
+                    /*
+                    Prepara imediatamente
+                    o próximo ciclo.
+                    */
+
+                    remainingSeconds =
+                        totalSeconds;
+
+                    updateTimer();
+
+                }
+
+            },
+            1000
+        );
 
 }
 
+
+/*
+================================
+ PAUSAR TIMER
+================================
+*/
 
 function pauseTimer() {
 
@@ -889,11 +1051,26 @@ function pauseTimer() {
 
     timerInterval = null;
 
+
+    /*
+    Se houver alerta ativo,
+    também para o alerta.
+    */
+
+    stopAlert();
+
+
     status.textContent =
         "Temporizador pausado";
 
 }
 
+
+/*
+================================
+ REINICIAR TIMER
+================================
+*/
 
 function resetTimer() {
 
@@ -905,8 +1082,10 @@ function resetTimer() {
 
     timerInterval = null;
 
+
     totalSeconds =
         getConfiguredTime();
+
 
     if (
         totalSeconds <= 0
@@ -920,18 +1099,28 @@ function resetTimer() {
 
     }
 
+
     remainingSeconds =
         totalSeconds;
 
+
     updateTimer();
+
 
     status.textContent =
         "Temporizador parado";
+
 
     stopAlert();
 
 }
 
+
+/*
+================================
+ ÁUDIO
+================================
+*/
 
 let audioContext = null;
 
@@ -949,6 +1138,7 @@ function initializeAudio() {
                 )();
 
         }
+
 
         if (
             audioContext.state ===
@@ -972,44 +1162,59 @@ function initializeAudio() {
 
 function beep() {
 
-    if (!sound.checked)
+    if (
+        !sound.checked
+    )
         return;
+
 
     try {
 
         initializeAudio();
 
+
         const oscillator =
             audioContext
                 .createOscillator();
+
 
         const gain =
             audioContext
                 .createGain();
 
+
         oscillator.type =
             "square";
 
+
         oscillator.frequency.value =
             900;
+
 
         gain.gain.setValueAtTime(
             .3,
             audioContext.currentTime
         );
 
+
         gain.gain.exponentialRampToValueAtTime(
             .01,
             audioContext.currentTime + .4
         );
 
-        oscillator.connect(gain);
+
+        oscillator.connect(
+            gain
+        );
+
 
         gain.connect(
             audioContext.destination
         );
 
+
         oscillator.start();
+
 
         oscillator.stop(
             audioContext.currentTime + .4
@@ -1052,23 +1257,38 @@ function stopSound() {
 }
 
 
+/*
+================================
+ TÍTULO PISCANDO
+================================
+*/
+
 function startTitleFlash() {
 
     stopTitleFlash();
 
+
     let state = false;
 
+
     titleInterval =
-        setInterval(() => {
+        setInterval(
+            () => {
 
-            state = !state;
+                state =
+                    !state;
 
-            document.title =
-                state
+
+                document.title =
+                    state
+
                     ? "🚨 ATENÇÃO!"
+
                     : "🚨 TEMPO TERMINOU!";
 
-        },500);
+            },
+            500
+        );
 
 }
 
@@ -1081,11 +1301,18 @@ function stopTitleFlash() {
 
     titleInterval = null;
 
+
     document.title =
         originalTitle;
 
 }
 
+
+/*
+================================
+ NOTIFICAÇÃO
+================================
+*/
 
 function requestNotification() {
 
@@ -1101,29 +1328,33 @@ function requestNotification() {
 
     }
 
+
     Notification
         .requestPermission()
-        .then(permission => {
+        .then(
+            permission => {
 
-            if (
-                permission === "granted"
-            ) {
+                if (
+                    permission ===
+                    "granted"
+                ) {
 
-                alert(
-                    "Notificações ativadas."
-                );
+                    alert(
+                        "Notificações ativadas."
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        "Permissão negada."
+                    );
+
+                }
 
             }
-
-            else {
-
-                alert(
-                    "Permissão negada."
-                );
-
-            }
-
-        });
+        );
 
 }
 
@@ -1135,11 +1366,13 @@ function sendNotification() {
     )
         return;
 
+
     if (
         Notification.permission !==
         "granted"
     )
         return;
+
 
     try {
 
@@ -1149,17 +1382,24 @@ function sendNotification() {
                 {
                     body:
                         "Seu tempo terminou!",
+
                     requireInteraction:
                         true
                 }
             );
+
+
+        /*
+        Ao clicar na notificação,
+        para o alerta.
+        */
 
         n.onclick =
             function() {
 
                 window.focus();
 
-                showVisibleAlert();
+                stopAlert();
 
             };
 
@@ -1174,12 +1414,19 @@ function sendNotification() {
 }
 
 
+/*
+================================
+ MOSTRAR ALERTA
+================================
+*/
+
 function showVisibleAlert() {
 
     const selected =
         document.querySelector(
             'input[name="effect"]:checked'
         );
+
 
     const effect =
         selected
@@ -1191,6 +1438,7 @@ function showVisibleAlert() {
         "flash",
         "shake"
     );
+
 
     alertScreen.classList.add(
         "active"
@@ -1236,12 +1484,18 @@ function showVisibleAlert() {
 }
 
 
+/*
+================================
+ MOSTRAR ALERTA COMPLETO
+================================
+*/
+
 function showAlert() {
 
     /*
-     * Descobre qual modo de alerta
-     * foi escolhido pelo usuário.
-     */
+    Descobre qual modo de alerta
+    foi escolhido.
+    */
 
     const selectedMode =
         document.querySelector(
@@ -1256,9 +1510,8 @@ function showAlert() {
 
 
     /*
-     * Manda a informação para
-     * o aplicativo Windows.
-     */
+    Envia o modo para o Electron.
+    */
 
     if (
         window.alarmSystem &&
@@ -1273,29 +1526,41 @@ function showAlert() {
 
 
     /*
-     * Mostra o alerta visual.
-     */
+    Mostra alerta visual.
+    */
 
     showVisibleAlert();
 
 
     /*
-     * Pisca o título.
-     */
+    Pisca o título.
+    */
 
     startTitleFlash();
 
 
     /*
-     * Notificação.
-     */
+    Envia notificação.
+    */
 
     sendNotification();
 
 }
 
 
+/*
+================================
+ PARAR ALERTA
+================================
+*/
+
 function stopAlert() {
+
+    /*
+    Remove somente o alerta visual.
+
+    O temporizador continua.
+    */
 
     alertScreen.classList.remove(
         "active",
@@ -1303,10 +1568,24 @@ function stopAlert() {
         "shake"
     );
 
+
+    /*
+    Para somente o som.
+    */
+
     stopSound();
+
+
+    /*
+    Para título piscando.
+    */
 
     stopTitleFlash();
 
+
+    /*
+    Retira sempre por cima.
+    */
 
     if (
         window.alarmSystem &&
@@ -1318,9 +1597,15 @@ function stopAlert() {
     }
 
 
+    /*
+    Timer continua funcionando.
+    */
+
     status.textContent =
         running
+
             ? "Temporizador funcionando"
+
             : "Temporizador pausado";
 
 }
@@ -1333,8 +1618,11 @@ function stopAlert() {
 */
 
 document
-    .getElementById("start")
-    .onclick = function() {
+    .getElementById(
+        "start"
+    )
+    .onclick =
+    function() {
 
         initializeAudio();
 
@@ -1344,38 +1632,43 @@ document
 
 
 document
-    .getElementById("pause")
+    .getElementById(
+        "pause"
+    )
     .onclick =
-        pauseTimer;
+    pauseTimer;
 
 
 document
-    .getElementById("reset")
+    .getElementById(
+        "reset"
+    )
     .onclick =
-        resetTimer;
+    resetTimer;
 
 
 document
-    .getElementById("stop")
+    .getElementById(
+        "stop"
+    )
     .onclick =
-        stopAlert;
+    stopAlert;
 
 
 document
-    .getElementById("notification")
+    .getElementById(
+        "notification"
+    )
     .onclick =
-        requestNotification;
+    requestNotification;
 
-
-/*
-================================
- TESTAR ALARME
-================================
-*/
 
 document
-    .getElementById("test")
-    .onclick = function() {
+    .getElementById(
+        "test"
+    )
+    .onclick =
+    function() {
 
         initializeAudio();
 
@@ -1386,7 +1679,7 @@ document
 
 /*
 ================================
- ESC
+ ATALHOS DO TECLADO
 ================================
 */
 
@@ -1394,9 +1687,111 @@ document.addEventListener(
     "keydown",
     function(event) {
 
+        /*
+        Não executa os atalhos
+        enquanto estiver digitando
+        nos campos.
+        */
+
+        const tag =
+            event.target.tagName;
+
+
+        if (
+            tag === "INPUT" ||
+            tag === "TEXTAREA"
+        ) {
+
+            /*
+            ESC continua funcionando.
+            */
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                stopAlert();
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+        F5 — INICIAR
+        */
+
+        if (
+            event.key === "F5"
+        ) {
+
+            event.preventDefault();
+
+            initializeAudio();
+
+            startTimer();
+
+        }
+
+
+        /*
+        F6 — PAUSAR
+        */
+
+        if (
+            event.key === "F6"
+        ) {
+
+            event.preventDefault();
+
+            pauseTimer();
+
+        }
+
+
+        /*
+        F7 — REINICIAR
+        */
+
+        if (
+            event.key === "F7"
+        ) {
+
+            event.preventDefault();
+
+            resetTimer();
+
+        }
+
+
+        /*
+        F8 — TESTAR ALERTA
+        */
+
+        if (
+            event.key === "F8"
+        ) {
+
+            event.preventDefault();
+
+            initializeAudio();
+
+            showAlert();
+
+        }
+
+
+        /*
+        ESC — PARAR ALERTA
+        */
+
         if (
             event.key === "Escape"
         ) {
+
+            event.preventDefault();
 
             stopAlert();
 
@@ -1421,8 +1816,10 @@ minutes.addEventListener(
             totalSeconds =
                 getConfiguredTime();
 
+
             remainingSeconds =
                 totalSeconds;
+
 
             updateTimer();
 
@@ -1441,8 +1838,10 @@ seconds.addEventListener(
             totalSeconds =
                 getConfiguredTime();
 
+
             remainingSeconds =
                 totalSeconds;
+
 
             updateTimer();
 
@@ -1461,12 +1860,15 @@ seconds.addEventListener(
 totalSeconds =
     getConfiguredTime();
 
+
 remainingSeconds =
     totalSeconds;
+
 
 updateTimer();
 
 </script>
+
 
 </body>
 
