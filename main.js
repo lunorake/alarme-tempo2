@@ -49,6 +49,8 @@ function createWindow() {
 
             sandbox: false
 
+            backgroundThrottling: false
+
         }
 
     });
