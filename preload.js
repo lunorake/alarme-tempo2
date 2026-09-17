@@ -6,22 +6,17 @@ const {
 contextBridge.exposeInMainWorld(
     "alarmSystem",
     {
-
-        start: function () {
-
+        start: function(mode) {
             ipcRenderer.send(
-                "alarm-start"
+                "alarm-start",
+                mode
             );
-
         },
 
-        stop: function () {
-
+        stop: function() {
             ipcRenderer.send(
                 "alarm-stop"
             );
-
         }
-
     }
 );
