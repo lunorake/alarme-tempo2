@@ -9,11 +9,9 @@ const path = require("path");
 let win = null;
 
 
-/*
-========================================
- CRIAR JANELA
-========================================
-*/
+// ========================================
+// CRIAR JANELA PRINCIPAL
+// ========================================
 
 function createWindow() {
 
@@ -27,38 +25,34 @@ function createWindow() {
 
         backgroundColor: "#10151c",
 
-        /*
-         * MOSTRA IMEDIATAMENTE
-         * para reduzir a sensação de demora.
-         */
         show: true,
 
         autoHideMenuBar: true,
 
         webPreferences: {
 
-            preload:
-                path.join(
-                    __dirname,
-                    "preload.js"
-                ),
+            preload: path.join(
+                __dirname,
+                "preload.js"
+            ),
 
             contextIsolation: true,
 
             nodeIntegration: false,
 
-            sandbox: false
+            sandbox: false,
 
+            // Evita que o Electron
+            // reduza a execução do timer
+            // quando a janela estiver em segundo plano.
             backgroundThrottling: false
-
         }
-
     });
 
 
-    /*
-     * Carrega o aplicativo.
-     */
+    // ========================================
+    // CARREGAR O INDEX.HTML
+    // ========================================
 
     win.loadFile(
         path.join(
@@ -68,10 +62,8 @@ function createWindow() {
     );
 
 
-    /*
-     * Quando carregar, garante
-     * que a janela esteja disponível.
-     */
+    // Garante que a janela apareça
+    // depois que o HTML terminar de carregar.
 
     win.webContents.on(
         "did-finish-load",
@@ -83,9 +75,9 @@ function createWindow() {
     );
 
 
-    /*
-     * Erros de carregamento.
-     */
+    // ========================================
+    // TRATAMENTO DE ERRO AO CARREGAR
+    // ========================================
 
     win.webContents.on(
         "did-fail-load",
@@ -96,7 +88,7 @@ function createWindow() {
         ) => {
 
             console.error(
-                "Erro:",
+                "Erro ao carregar o aplicativo:",
                 errorCode,
                 errorDescription
             );
@@ -104,6 +96,10 @@ function createWindow() {
         }
     );
 
+
+    // ========================================
+    // QUANDO A JANELA FOR FECHADA
+    // ========================================
 
     win.on(
         "closed",
@@ -113,21 +109,12 @@ function createWindow() {
 
         }
     );
-
 }
 
 
-/*
-========================================
- ALERTA
-========================================
-
- mode:
-
- fullscreen
- window
- small
-*/
+// ========================================
+// INICIAR ALERTA
+// ========================================
 
 ipcMain.on(
     "alarm-start",
@@ -140,29 +127,24 @@ ipcMain.on(
             return;
 
 
-        /*
-         * Primeiro mostra.
-         */
+        // Mostra a janela
 
         win.show();
 
         win.focus();
 
 
-        /*
-         * Tira configurações anteriores.
-         */
+        // Primeiro restaura
+        // o estado normal da janela.
 
         win.setFullScreen(false);
 
         win.setAlwaysOnTop(false);
 
 
-        /*
-         =================================
-         TELA CHEIA
-         =================================
-        */
+        // ====================================
+        // ALERTA EM TELA CHEIA
+        // ====================================
 
         if (
             mode === "fullscreen"
@@ -178,15 +160,12 @@ ipcMain.on(
             win.focus();
 
             return;
-
         }
 
 
-        /*
-         =================================
-         JANELA GRANDE
-         =================================
-        */
+        // ====================================
+        // ALERTA EM JANELA GRANDE
+        // ====================================
 
         if (
             mode === "window"
@@ -206,15 +185,12 @@ ipcMain.on(
             win.focus();
 
             return;
-
         }
 
 
-        /*
-         =================================
-         JANELA PEQUENA
-         =================================
-        */
+        // ====================================
+        // ALERTA EM JANELA PEQUENA
+        // ====================================
 
         if (
             mode === "small"
@@ -234,18 +210,15 @@ ipcMain.on(
             win.focus();
 
             return;
-
         }
 
     }
 );
 
 
-/*
-========================================
- PARAR ALERTA
-========================================
-*/
+// ========================================
+// PARAR ALERTA
+// ========================================
 
 ipcMain.on(
     "alarm-stop",
@@ -255,23 +228,35 @@ ipcMain.on(
             return;
 
 
+        // Sai do modo tela cheia
+
         win.setFullScreen(false);
+
+
+        // Remove "sempre no topo"
 
         win.setAlwaysOnTop(false);
 
 
-        /*
-         * Volta ao tamanho normal.
-         */
+        // Volta ao tamanho original
 
         win.setSize(
             700,
             850
         );
 
+
+        // Centraliza novamente
+
         win.center();
 
+
+        // Mostra a janela
+
         win.show();
+
+
+        // Coloca o foco nela
 
         win.focus();
 
@@ -279,11 +264,9 @@ ipcMain.on(
 );
 
 
-/*
-========================================
- INICIAR ELECTRON
-========================================
-*/
+// ========================================
+// ELECTRON PRONTO
+// ========================================
 
 app.whenReady().then(
     () => {
@@ -294,11 +277,9 @@ app.whenReady().then(
 );
 
 
-/*
-========================================
- FECHAR WINDOWS
-========================================
-*/
+// ========================================
+// FECHAR APLICATIVO
+// ========================================
 
 app.on(
     "window-all-closed",
