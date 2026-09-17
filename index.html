@@ -940,100 +940,82 @@ function startTimer() {
     if (running)
         return;
 
-
-    /*
-    Se o contador chegou a zero,
-    começa um novo ciclo.
-    */
-
-    if (
-        remainingSeconds <= 0
-    ) {
+    if (remainingSeconds <= 0) {
 
         totalSeconds =
             getConfiguredTime();
 
         remainingSeconds =
             totalSeconds;
-
     }
 
-
-    /*
-    Não permite iniciar com zero.
-    */
-
-    if (
-        totalSeconds <= 0
-    ) {
+    if (totalSeconds <= 0) {
 
         alert(
             "Informe um tempo maior que zero."
         );
 
         return;
-
     }
-
 
     running = true;
 
-
     status.textContent =
         "Temporizador funcionando";
-
 
     clearInterval(
         timerInterval
     );
 
-
-    /*
-    CICLO CONTÍNUO
-    */
+    let endTime =
+        Date.now() +
+        (remainingSeconds * 1000);
 
     timerInterval =
         setInterval(
             () => {
 
-                remainingSeconds--;
+                const now =
+                    Date.now();
+
+                const difference =
+                    endTime - now;
+
+                remainingSeconds =
+                    Math.max(
+                        0,
+                        Math.ceil(
+                            difference / 1000
+                        )
+                    );
 
                 updateTimer();
 
-
-                /*
-                CHEGOU A ZERO
-                */
-
                 if (
-                    remainingSeconds <= 0
+                    difference <= 0
                 ) {
-
-                    /*
-                    Mostra o alerta.
-                    */
 
                     showAlert();
 
-
-                    /*
-                    Prepara imediatamente
-                    o próximo ciclo.
-                    */
+                    totalSeconds =
+                        getConfiguredTime();
 
                     remainingSeconds =
                         totalSeconds;
+
+                    endTime =
+                        Date.now() +
+                        (totalSeconds * 1000);
 
                     updateTimer();
 
                 }
 
             },
-            1000
+            200
         );
 
 }
-
 
 /*
 ================================
@@ -1051,14 +1033,7 @@ function pauseTimer() {
 
     timerInterval = null;
 
-
-    /*
-    Se houver alerta ativo,
-    também para o alerta.
-    */
-
     stopAlert();
-
 
     status.textContent =
         "Temporizador pausado";
